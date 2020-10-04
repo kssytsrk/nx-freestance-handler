@@ -16,7 +16,7 @@
 
 ;;;; package.lisp
 
-(in-package :nyxt-user)
+(in-package :nyxt)
 
 (uiop:define-package :invidious-handler
     (:use :common-lisp :nyxt)
@@ -26,15 +26,13 @@ Invidious is an alternative front-end to Youtube that uses copylefted libre soft
 
 To turn the handler on, add something like this to your init file:
 \"(asdf:load-system :invidious-handler)
-  (use-package :invidious-handler)
 
   (define-configuration buffer
     ((request-resource-hook
       (reduce #'hooks:add-hook
-              (list invidious-handler)
+              (list invidious-handler:invidious-handler)
               :initial-value %slot-default))))\"
 
-By default, this handler redirects from youtube.com to the healthiest (i.e, with best uptime) instance available, but if you prefer a particular one, it can be set with SET-PREFERRED-INVIDIOUS-INSTANCE Nyxt command, or in your init file with `(setf *preferred-invidious-instance* \"example.org\")`.")
+By default, this handler redirects from youtube.com to the healthiest (i.e, with best uptime) instance available, but if you prefer a particular one, it can be set with SET-PREFERRED-INVIDIOUS-INSTANCE Nyxt command, or in your init file with `(setf invidious-handler:*preferred-invidious-instance* \"example.org\")`.")
   (:export :*preferred-invidious-instance*
-           :set-preferred-invidious-instance
            :invidious-handler))

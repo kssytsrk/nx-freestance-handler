@@ -54,14 +54,6 @@
 
 (defvar *preferred-invidious-instance* nil)
 
-(define-command set-preferred-invidious-instance ()
-  "Set the preferred invidious instance."
-  (with-result (instance (read-from-minibuffer
-                          (make-minibuffer
-                           :input-prompt "Choose an instance"
-                           :suggestion-function (invidious-instance-suggestion-filter))))
-    (setf *preferred-invidious-instance* (object-string instance))))
-
 (defparameter invidious-handler
   (url-dispatching-handler
    'invidious-dispatcher
@@ -72,3 +64,13 @@
                       :host (first (get-invidious-instances))))
      (quri:copy-uri url
                     :host *preferred-invidious-instance*))))
+
+(in-package :nyxt)
+
+(define-command set-preferred-invidious-instance ()
+  "Set the preferred invidious instance."
+  (with-result (instance (read-from-minibuffer
+                          (make-minibuffer
+                           :input-prompt "Choose an instance"
+                           :suggestion-function (invidious-handler::invidious-instance-suggestion-filter))))
+    (setf invidious-handler:*preferred-invidious-instance* (invidious-handler::object-string instance))))
