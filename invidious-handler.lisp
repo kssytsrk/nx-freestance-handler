@@ -59,11 +59,11 @@
    'invidious-dispatcher
    (match-host "www.youtube.com")
    (lambda (url)
-     (unless *preferred-invidious-instance*
-       (quri:copy-uri url
-                      :host (first (get-invidious-instances))))
-     (quri:copy-uri url
-                    :host *preferred-invidious-instance*))))
+     (if *preferred-invidious-instance*
+         (quri:copy-uri url
+                        :host *preferred-invidious-instance*)
+         (quri:copy-uri url
+                        :host (object-string (first (get-invidious-instances))))))))
 
 (in-package :nyxt)
 
