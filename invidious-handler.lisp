@@ -27,9 +27,8 @@
 
 (defmethod object-display ((invidious-instance invidious-instance))
   (format nil
-          "~a (health: ~:[unknown~;~a~])"
+          "~a (health: ~:[unknown~;~:*~a~])"
           (invidious-instance-name invidious-instance)
-          (invidious-instance-health invidious-instance)
           (invidious-instance-health invidious-instance)))
 
 (defun get-invidious-instances ()
