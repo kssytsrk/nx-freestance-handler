@@ -6,7 +6,7 @@ invidious-handler is a simple redirector from Youtube to Invidious for the [Nyxt
 
 ## Installation
 
-Clone this repository to ~/common-lisp with:
+Clone this repository (a good location would be in ~/.config/nyxt) with:
 
 ```bash
 $ git clone https://github.com/kssytsrk/invidious-handler
@@ -17,7 +17,7 @@ $ git clone https://github.com/kssytsrk/invidious-handler
 To turn the handler on, add something like this to your Nyxt init.lisp file:
 
 ```common-lisp
-(asdf:load-system :invidious-handler)
+(load-after-system :invidious-handler "/path/to/the/invidious-handler.asd")
 
 (define-configuration buffer
     ((request-resource-hook
