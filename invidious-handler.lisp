@@ -70,8 +70,7 @@
 
 (define-command set-preferred-invidious-instance ()
   "Set the preferred invidious instance."
-  (with-result (instance (read-from-minibuffer
-                          (make-minibuffer
-                           :input-prompt "Choose an instance"
-                           :suggestion-function (invidious-handler::invidious-instance-suggestion-filter))))
+  (let ((instance (prompt-minibuffer
+                   :input-prompt "Choose an instance"
+                   :suggestion-function (invidious-handler::invidious-instance-suggestion-filter))))
     (setf invidious-handler:*preferred-invidious-instance* (invidious-handler::object-string instance))))
