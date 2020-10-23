@@ -56,9 +56,7 @@
 (defparameter invidious-handler
   (url-dispatching-handler
    'invidious-dispatcher
-   (lambda (url)
-     (or (funcall (match-host "www.youtube.com") url)
-         (funcall (match-host "www.youtu.be") url)))
+   (match-host "www.youtube.com" "www.youtu.be")
    (lambda (url)
      (if *preferred-invidious-instance*
          (quri:copy-uri url
