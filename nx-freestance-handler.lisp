@@ -15,16 +15,9 @@
 ;;;; You should have received a copy of the GNU General Public License
 ;;;; along with this program. If not, see <https://www.gnu.org/licenses/>.
 
-;;;; nx-freestance-handler.asd
+;;;; nx-freestance-handler.lisp
 
-(asdf:defsystem :nx-freestance-handler
-  :serial t
-  :version "1.0.0"
-  :description "A redirector from mainstream websites to their privacy-supporting mirrors for the Nyxt browser."
-  :author "kssytsrk"
-  :license "GNU General Public License v3.0"
-  :depends-on (:nyxt
-               :dexador
-               :cl-json)
-  :components ((:file "package")
-               (:file "invidious-handler")))
+(in-package :nx-freestance-handler)
+
+(defvar *freestance-handlers*
+  '(invidious-handler teddit-handler))
