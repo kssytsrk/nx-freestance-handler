@@ -1,4 +1,5 @@
-;;;; invidious-handler, a redirector from Youtube to Invidious for Nyxt browser
+;;;; freestance-handler, a redirector from mainstream websites to their
+;;;; privacy-supporting mirrors for the Nyxt browser
 ;;;; Copyright (C) 2020 kssytsrk
 
 ;;;; This program is free software: you can redistribute it and/or modify
@@ -14,16 +15,9 @@
 ;;;; You should have received a copy of the GNU General Public License
 ;;;; along with this program. If not, see <https://www.gnu.org/licenses/>.
 
-;;;; invidious-handler.asd
+;;;; nx-freestance-handler.lisp
 
-(asdf:defsystem :invidious-handler
-  :serial t
-  :version "1.0.0"
-  :description "A redirector from Youtube to Invidious."
-  :author "kssytsrk"
-  :license "GNU General Public License v3.0"
-  :depends-on (:nyxt
-               :dexador
-               :cl-json)
-  :components ((:file "package")
-               (:file "invidious-handler")))
+(in-package :nx-freestance-handler)
+
+(defvar *freestance-handlers*
+  '(invidious-handler teddit-handler))

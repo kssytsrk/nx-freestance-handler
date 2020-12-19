@@ -15,19 +15,10 @@
 ;;;; You should have received a copy of the GNU General Public License
 ;;;; along with this program. If not, see <https://www.gnu.org/licenses/>.
 
-;;;; package.lisp
+;;;; freestance-handler.lisp
 
-(in-package :nyxt)
+(in-package :nx-freestance-handler)
 
-(uiop:define-package :nx-freestance-handler
-    (:use :common-lisp :nyxt)
-  (:documentation "A redirector from mainstream websites to their privacy-supporting mirrors for the Nyxt browser.")
-  (:export :*preferred-invidious-instance*
-           :*preferred-teddit-instance*
-           :*preferred-bibliogram-instance*
-           :*preferred-nitter-instance*
-           :*freestance-handlers*
-           :invidious-handler
-           :teddit-handler
-           :bibliogram-handler
-           :nitter-handler))
+(defparameter *freestance-handlers*
+  (list invidious-handler teddit-handler bibliogram-handler nitter-handler)
+  "List of all handlers in the nx-freestance-handler.")
