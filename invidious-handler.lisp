@@ -1,4 +1,5 @@
-;;;; invidious-handler, a redirector from Youtube to Invidious for Nyxt browser
+;;;; freestance-handler, a redirector from mainstream websites to their
+;;;; privacy-supporting mirrors for the Nyxt browser
 ;;;; Copyright (C) 2020 kssytsrk
 
 ;;;; This program is free software: you can redistribute it and/or modify
@@ -16,7 +17,7 @@
 
 ;;;; invidious-handler.lisp
 
-(in-package :invidious-handler)
+(in-package :nx-freestance-handler)
 
 (defstruct invidious-instance
   (name)
@@ -70,5 +71,5 @@
   "Set the preferred invidious instance."
   (let ((instance (prompt-minibuffer
                    :input-prompt "Choose an instance"
-                   :suggestion-function (invidious-handler::invidious-instance-suggestion-filter))))
-    (setf invidious-handler:*preferred-invidious-instance* (invidious-handler::object-string instance))))
+                   :suggestion-function (nx-freestance-handler::invidious-instance-suggestion-filter))))
+    (setf nx-freestance-handler:*preferred-invidious-instance* (nx-freestance-handler::object-string instance))))
