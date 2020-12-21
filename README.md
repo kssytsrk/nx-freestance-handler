@@ -32,9 +32,11 @@ To turn the handler on, add something like this to your Nyxt `init.lisp` file:
 Then, create `freestance.lisp` file in `~/.config/nyxt` with these contents:
 
 ```common-lisp
-;; to add all handlers/redirectors (youtube to invidious, reddit to teddit, 
+;; to add all handlers/redirectors (youtube to invidious, reddit to teddit,
 ;; instagram to bibliogram, twitter to nitter)
-(nconc *my-request-resource-handlers* nx-freestance-handler:*freestance-handlers*)
+(setq *my-request-resource-handlers*
+      (nconc *my-request-resource-handlers*
+             nx-freestance-handler:*freestance-handlers*))
 
 ;; alternatively, you may add each separately
 ;; (push nx-freestance-handler:invidious-handler *my-request-resource-handlers*)
@@ -44,7 +46,7 @@ Then, create `freestance.lisp` file in `~/.config/nyxt` with these contents:
 
 ;; to set your preferred instance, either invoke SET-PREFERRED-[name of website]-INSTANCE
 ;; command in Nyxt (its effect last until you close Nyxt), or write something like this:
-;; (setf invidious-handler:*preferred-invidious-instance* "example.org")
+;; (setf nx-freestance-handler:*preferred-invidious-instance* "https://invidious.snopyta.org")
 ```
 
 By default, for Invidious this handler redirects from youtube.com to the healthiest (i.e, with best uptime) instance available. For Teddit it redirects to the official teddit.net instance, for Nitter - to nitter.net and for Bibliogram - to bibliogram.art.
