@@ -25,7 +25,7 @@
    'bibliogram-dispatcher
    (match-host "www.instagram.com" "instagram.com")
    (lambda (url)
-     (if (str:starts-with? "/p/" (uri-path url))
+     (if (str:starts-with? "/p/" (quri:uri-path url))
          ;; view of posts disectly in bibliogram is broken:
          ;; see https://todo.sr.ht/~cadence/bibliogram-issues/26
          url
@@ -35,7 +35,7 @@
                                            ;; bibliogram seems to have the "/u/"
                                            ;; scheme for users, while instagram
                                            ;; has none, so this has to be added
-                                           (unless (= (length (uri-path url)) 0)
+                                           (unless (= (length (quri:uri-path url)) 0)
                                                "/u")))))))
 
 (in-package :nyxt)
