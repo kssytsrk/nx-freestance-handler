@@ -24,9 +24,7 @@
   :author "kssytsrk"
   :license "GNU General Public License v3.0"
   :serial t
-  :depends-on (:nyxt
-               :dexador
-               :cl-json)
+  :depends-on ()
   :components ((:file "package")
                (:file "invidious-handler")
                (:file "teddit-handler")

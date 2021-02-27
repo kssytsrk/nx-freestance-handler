@@ -29,13 +29,14 @@
          ;; view of posts disectly in bibliogram is broken:
          ;; see https://todo.sr.ht/~cadence/bibliogram-issues/26
          url
-         (quri:copy-uri :host (concatenate 'string
+         (quri:copy-uri url
+			:host (concatenate 'string
                                            (or *preferred-bibliogram-instance*
                                                "bibliogram.art")
                                            ;; bibliogram seems to have the "/u/"
                                            ;; scheme for users, while instagram
                                            ;; has none, so this has to be added
-                                           (unless (= (length (quri:uri-path url)) 0)
+                                           (unless (<= (length (quri:uri-path url)) 1)
                                                "/u")))))))
 
 (in-package :nyxt)
