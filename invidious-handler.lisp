@@ -54,16 +54,19 @@
 
 (defvar *preferred-invidious-instance* nil)
 
-(defparameter invidious-handler
-  (url-dispatching-handler
-   'invidious-dispatcher
-   (match-host "www.youtube.com" "www.youtu.be")
-   (lambda (url)
-     (if *preferred-invidious-instance*
-         (quri:copy-uri url
-                        :host *preferred-invidious-instance*)
-         (quri:copy-uri url
-                        :host (object-string (first (get-invidious-instances))))))))
+(defun invidious-handler (request-data)
+ (let ((url (url request-data)))
+    (setf (url request-data)
+          (if (or (search "youtube.com" (quri:uri-host url))
+		  (search "youtu.be"    (quri:uri-host url)))
+              (progn
+                (setf (quri:uri-host url)
+		      (or *preferred-invidious-instance*
+			  (object-string (first (get-invidious-instances)))))
+                (log:info "Switching to Invidious: ~s" (render-url url))
+                url)
+              url)))
+  request-data)
 
 (in-package :nyxt)
 

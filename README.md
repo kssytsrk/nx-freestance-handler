@@ -22,11 +22,12 @@ To turn the handler on, add something like this to your Nyxt `init.lisp` file:
 (load-after-system :nx-freestance-handler
                    (nyxt-init-file "freestance.lisp"))
 
-(define-configuration buffer
-    ((request-resource-hook
-      (reduce #'hooks:add-hook
-              *my-request-resource-handlers*
-              :initial-value %slot-default))))
+(define-configuration web-buffer
+  ((request-resource-hook
+    (reduce #'hooks:add-hook
+            (mapcar #'make-handler-resource
+		    *my-request-resource-handlers*)
+            :initial-value %slot-default%))))
 ```
 
 Then, create `freestance.lisp` file in `~/.config/nyxt` with these contents:
@@ -39,17 +40,17 @@ Then, create `freestance.lisp` file in `~/.config/nyxt` with these contents:
              nx-freestance-handler:*freestance-handlers*))
 
 ;; alternatively, you may add each separately
-;; (push nx-freestance-handler:invidious-handler *my-request-resource-handlers*)
-;; (push nx-freestance-handler:nitter-handler *my-request-resource-handlers*)
-;; (push nx-freestance-handler:bibliogram-handler *my-request-resource-handlers*)
-;; (push nx-freestance-handler:teddit-handler *my-request-resource-handlers*)
+;; (push #'nx-freestance-handler:invidious-handler *my-request-resource-handlers*)
+;; (push #'nx-freestance-handler:nitter-handler *my-request-resource-handlers*)
+;; (push #'nx-freestance-handler:bibliogram-handler *my-request-resource-handlers*)
+;; (push #'nx-freestance-handler:teddit-handler *my-request-resource-handlers*)
 
 ;; to set your preferred instance, either invoke SET-PREFERRED-[name of website]-INSTANCE
-;; command in Nyxt (its effect last until you close Nyxt), or write something like this:
+;; command in Nyxt (the effect lasts until you close Nyxt), or write something like this:
 ;; (setf nx-freestance-handler:*preferred-invidious-instance* "https://invidious.snopyta.org")
 ```
 
-By default, for Invidious this handler redirects from youtube.com to the healthiest (i.e, with best uptime) instance available. For Teddit it redirects to the official teddit.net instance, for Nitter - to nitter.net and for Bibliogram - to bibliogram.art.
+By default, for Invidious this handler redirects to the healthiest (i.e, with best uptime) instance available. For Teddit it redirects to the official teddit.net instance, for Nitter - to nitter.net and for Bibliogram - to bibliogram.art.
 
 FYI, right now direct links to posts on Instagram are not redirected, as Bibliogram [doesn't seem to support](https://todo.sr.ht/~cadence/bibliogram-issues/26) them (yet?).
 

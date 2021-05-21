@@ -20,16 +20,17 @@
 
 (defvar *preferred-nitter-instance* nil)
 
-(defparameter nitter-handler
-  (url-dispatching-handler
-   'nitter-dispatcher
-   (match-host "twitter.com")
-   (lambda (url)
-     (if *preferred-nitter-instance*
-         (quri:copy-uri url
-                        :host *preferred-nitter-instance*)
-         (quri:copy-uri url
-                        :host "nitter.net")))))
+(defun nitter-handler (request-data)
+  (let ((url (url request-data)))
+    (setf (url request-data)
+          (if (search "twitter.com" (quri:uri-host url))
+              (progn
+                (setf (quri:uri-host url) (or *preferred-nitter-instance*
+					      "nitter.net"))
+                (log:info "Switching to Nitter: ~s" (render-url url))
+                url)
+              url)))
+  request-data)
 
 (in-package :nyxt)
 

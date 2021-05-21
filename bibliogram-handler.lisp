@@ -20,24 +20,21 @@
 
 (defvar *preferred-bibliogram-instance* nil)
 
-(defparameter bibliogram-handler
-  (url-dispatching-handler
-   'bibliogram-dispatcher
-   (match-host "www.instagram.com" "instagram.com")
-   (lambda (url)
-     (if (str:starts-with? "/p/" (quri:uri-path url))
-         ;; view of posts disectly in bibliogram is broken:
-         ;; see https://todo.sr.ht/~cadence/bibliogram-issues/26
-         url
-         (quri:copy-uri url
-			:host (concatenate 'string
-                                           (or *preferred-bibliogram-instance*
-                                               "bibliogram.art")
-                                           ;; bibliogram seems to have the "/u/"
-                                           ;; scheme for users, while instagram
-                                           ;; has none, so this has to be added
-                                           (unless (<= (length (quri:uri-path url)) 1)
-                                               "/u")))))))
+(defun bibliogram-handler (request-data)
+  (let ((url (url request-data)))
+    (setf (url request-data)
+          (if (search "instagram.com" (quri:uri-host url))
+              (progn
+                (setf (quri:uri-host url) (or *preferred-bibliogram-instance*
+					      "bibliogram.art"))
+		(if (and (< 0 (length (quri:uri-path url)))
+			 (not (str:starts-with? "/p/" (quri:uri-path url))))
+		    (setf (quri:uri-path url)
+			  (concatenate 'string "/u" (quri:uri-path url))))
+                (log:info "Switching to Bibliogram: ~s" (render-url url))
+                url)
+              url)))
+  request-data)
 
 (in-package :nyxt)
 

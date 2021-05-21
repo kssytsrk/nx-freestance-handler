@@ -20,5 +20,5 @@
 (in-package :nx-freestance-handler)
 
 (defparameter *freestance-handlers*
-  (list invidious-handler teddit-handler bibliogram-handler nitter-handler)
+  (list #'invidious-handler #'teddit-handler #'bibliogram-handler #'nitter-handler)
   "List of all handlers in the nx-freestance-handler.")

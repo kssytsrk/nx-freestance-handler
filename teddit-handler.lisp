@@ -20,16 +20,17 @@
 
 (defvar *preferred-teddit-instance* nil)
 
-(defparameter teddit-handler
-  (url-dispatching-handler
-   'teddit-dispatcher
-   (match-host "www.reddit.com" "old.reddit.com")
-   (lambda (url)
-     (if *preferred-teddit-instance*
-         (quri:copy-uri url
-                        :host *preferred-teddit-instance*)
-         (quri:copy-uri url
-                        :host "teddit.net")))))
+(defun teddit-handler (request-data)
+  (let ((url (url request-data)))
+    (setf (url request-data)
+          (if (search "reddit.com" (quri:uri-host url))
+              (progn
+                (setf (quri:uri-host url) (or *preferred-teddit-instance*
+					      "teddit.net"))
+                (log:info "Switching to Teddit: ~s" (render-url url))
+                url)
+              url)))
+  request-data)
 
 (in-package :nyxt)
 
