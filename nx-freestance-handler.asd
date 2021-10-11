@@ -29,5 +29,6 @@
                (:file "invidious-handler")
                (:file "teddit-handler")
                (:file "bibliogram-handler")
+               (:file "scribe-handler")
                (:file "nitter-handler")
                (:file "freestance-handler")))

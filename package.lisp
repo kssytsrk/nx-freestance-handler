@@ -25,9 +25,11 @@
   (:export :*preferred-invidious-instance*
            :*preferred-teddit-instance*
            :*preferred-bibliogram-instance*
+           :*preferred-scribe-instance*
            :*preferred-nitter-instance*
            :*freestance-handlers*
            :invidious-handler
            :teddit-handler
            :bibliogram-handler
+           :scribe-handler
            :nitter-handler))
