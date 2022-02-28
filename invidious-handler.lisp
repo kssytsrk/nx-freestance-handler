@@ -32,20 +32,37 @@
           (invidious-instance-name invidious-instance)
           (invidious-instance-health invidious-instance)))
 
+(defvar *instance-cache* nil
+  "Cache of Invidious instances to avoid requesting them repeatedly.")
+
+(defvar *last-cache-update* 0
+  "The universal time `*instance-cache*' was last updated at.")
+
+(defvar *cache-update-interval* (* 24 60 60)
+  "The interval to update `*instance-cache*' at.
+Defaults to one day.")
+
 (defun get-invidious-instances ()
-  (mapcar #'(lambda (json)
-              (make-invidious-instance :name (first json)
-                                       :health (rest
-                                                (assoc ':ratio
-                                                       (rest
-                                                        (assoc ':weekly-ratio
-                                                               (rest
-                                                                (assoc ':monitor
-                                                                       (first
-                                                                        (rest json))))))))))
-          (cl-json:with-decoder-simple-list-semantics
-              (cl-json:decode-json-from-string
-               (dex:get "https://instances.invidio.us/instances.json?sort_by=health")))))
+  (if (and (< (- (get-universal-time) *last-cache-update*) *cache-update-interval*)
+           *instance-cache*)
+      *instance-cache*
+      (progn
+        (setf *last-cache-update* (get-universal-time))
+        (setf
+         *instance-cache*
+         (mapcar #'(lambda (json)
+                     (make-invidious-instance
+                      :name (first json)
+                      :health (rest
+                               (assoc :ratio
+                                      (rest
+                                       (assoc :weekly-ratio
+                                              (rest
+                                               (assoc :monitor
+                                                      (first (rest json))))))))))
+                 (cl-json:with-decoder-simple-list-semantics
+                   (cl-json:decode-json-from-string
+                    (dex:get "https://instances.invidio.us/instances.json?sort_by=health"))))))))
 
 (defun invidious-instance-suggestion-filter ()
   (let* ((instances (get-invidious-instances)))
