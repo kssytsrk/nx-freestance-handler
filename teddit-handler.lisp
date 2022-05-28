@@ -32,8 +32,10 @@
               url)))
   request-data)
 
+#+nyxt-2
 (in-package :nyxt)
 
+#+nyxt-2
 (define-command set-preferred-teddit-instance ()
   "Set the preferred Teddit instance."
   (let ((instance (prompt-minibuffer
@@ -41,4 +43,13 @@
                    :suggestion-function (history-suggestion-filter
                                       :prefix-urls (list (object-string
                                                           (url (current-buffer))))))))
+    (setf nx-freestance-handler:*preferred-teddit-instance* instance)))
+
+#+nyxt-3
+(define-command-global set-preferred-teddit-instance ()
+  "Set the preferred Teddit instance."
+  (let ((instance (prompt
+                   :prompt "Input the URL of the instance"
+                   :sources (list (make-instance 'prompter:raw-source)
+                                  (make-instance 'nyxt/history-mode:history-all-source)))))
     (setf nx-freestance-handler:*preferred-teddit-instance* instance)))
