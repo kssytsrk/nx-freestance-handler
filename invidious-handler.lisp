@@ -85,11 +85,22 @@ Defaults to one day.")
               url)))
   request-data)
 
+#+nyxt-2
 (in-package :nyxt)
 
+#+nyxt-2
 (define-command set-preferred-invidious-instance ()
   "Set the preferred invidious instance."
   (let ((instance (prompt-minibuffer
                    :input-prompt "Choose an instance"
                    :suggestion-function (nx-freestance-handler::invidious-instance-suggestion-filter))))
+    (setf nx-freestance-handler:*preferred-invidious-instance* (nx-freestance-handler::object-string instance))))
+
+#+nyxt-3
+(define-command-global set-preferred-invidious-instance ()
+  "Set the preferred invidious instance."
+  (let ((instance (prompt
+                   :prompt "Input the URL of the instance"
+                   :sources (list (make-instance 'prompter:raw-source)
+                                  (make-instance 'nyxt/history-mode:history-all-source)))))
     (setf nx-freestance-handler:*preferred-invidious-instance* (nx-freestance-handler::object-string instance))))
